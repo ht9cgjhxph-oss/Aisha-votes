@@ -1,57 +1,158 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <title>نتائج التصويت</title>
+    <meta charset="UTF-8">
+    <title>نتائج تقييم المجموعات</title>
 
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
-  <style>
-    body { font-family: sans-serif; text-align: center; padding: 30px; }
-    .box {
-      background: #f7f7f7; padding: 20px; margin: 10px auto;
-      width: 80%; border-radius: 12px; font-size: 22px;
-    }
-  </style>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: #f2e4ff; /* بنفسجي فاتح */
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            background: white;
+            width: 90%;
+            max-width: 700px;
+            margin: auto;
+            padding: 30px 20px;
+            border-radius: 25px;
+            box-shadow: 0 0 15px #d2b6ff;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .group-row {
+            background: #f7f0ff;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .points {
+            color: #7a00c4;
+            width: 40px;
+            text-align: left;
+        }
+
+        .rank {
+            width: 40px;
+            text-align: right;
+            font-size: 20px;
+        }
+
+        .refresh-btn {
+            margin-top: 20px;
+            background: #a357ff;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .refresh-btn:hover {
+            opacity: 0.8;
+        }
+    </style>
 </head>
 
 <body>
 
-<h2>📊 نتائج التصويت</h2>
+<div class="container">
+    <h1>نتائج تقييم المجموعات</h1>
 
-<div class="box" id="full">مجموعة الفل: ...</div>
-<div class="box" id="yasmeen">مجموعه الياسمين: ...</div>
-<div class="box" id="orchid">مجموعه الاوركيد: ...</div>
-<div class="box" id="jory">مجموعة الجوري: ...</div>
-<div class="box" id="lavender">مجموعه اللافندر: ...</div>
-<div class="box" id="tulip">مجموعة التوليب: ...</div>
+    <div id="results"></div>
+
+    <button class="refresh-btn" onclick="location.reload()">تحديث الصفحة</button>
+</div>
 
 <script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyC8UZJKyPt5pJx0SnmgZNZ4a2AJQXTMQwE",
-    authDomain: "aisha-almutairi-votes.firebaseapp.com",
-    databaseURL: "https://aisha-almutairi-votes-default-rtdb.europe-west1.firebasedatabase.app/",
-    projectId: "aisha-almutairi-votes",
-    storageBucket: "aisha-almutairi-votes.firebasestorage.app",
-    messagingSenderId: "854043244442",
-    appId: "1:854043244442:web:7a322b5296b064e3bf2c23"
-  };
+    const firebaseConfig = {
+        apiKey: "AIzaSyC8UZJKyPt5pJx0SnmgZNZ4a2AJQXTMQwE",
+        authDomain: "aisha-almutairi-votes.firebaseapp.com",
+        databaseURL: "https://aisha-almutairi-votes-default-rtdb.europe-west1.firebasedatabase.app/",
+        projectId: "aisha-almutairi-votes",
+        storageBucket: "aisha-almutairi-votes.firebasestorage.app",
+        messagingSenderId: "854043244442",
+        appId: "1:854043244442:web:7a322b5296b064e3bf2c23"
+    };
 
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.database();
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
 
-  db.ref("votes").on("value", snap => {
-    let v = snap.val() || {};
+    const groups = {
+        "Jory": "الجوري",
+        "Yasmeen": "الياسمين",
+        "Lavender": "اللافندر",
+        "Orchid": "الأوركيد",
+        "Alfull": "الفل",
+        "Tulip": "التوليب"
+    };
 
-    document.getElementById("full").innerHTML = "مجموعة الفل: " + (v.AlFull || 0);
-    document.getElementById("yasmeen").innerHTML = "مجموعه الياسمين: " + (v.Yasmeen || 0);
-    document.getElementById("orchid").innerHTML = "مجموعه الاوركيد: " + (v.Orchid || 0);
-    document.getElementById("jory").innerHTML = "مجموعة الجوري: " + (v.Jory || 0);
-    document.getElementById("lavender").innerHTML = "مجموعه اللافندر: " + (v.Lavender || 0);
-    document.getElementById("tulip").innerHTML = "مجموعة التوليب: " + (v.Tulip || 0);
-  });
+    db.ref("votes").on("value", snap => {
+        let data = snap.val() || {};
+        let finalResults = [];
+
+        for (let key in groups) {
+            let g = data[key] || {};
+
+            let total =
+                (g.participation || 0) +
+                (g.cooperation || 0) +
+                (g.calm || 0) +
+                (g.speed || 0) +
+                (g.discipline || 0);
+
+            finalResults.push({
+                name: groups[key],
+                total: total
+            });
+        }
+
+        // ترتيب من الأعلى للأقل
+        finalResults.sort((a, b) => b.total - a.total);
+
+        const resultsDiv = document.getElementById("results");
+        resultsDiv.innerHTML = "";
+
+        finalResults.forEach((g, index) => {
+            let medal = "";
+
+            if (g.total > 0) {
+                if (index === 0) medal = "🥇";
+                else if (index === 1) medal = "🥈";
+                else if (index === 2) medal = "🥉";
+            }
+
+            resultsDiv.innerHTML += `
+                <div class="group-row">
+                    <div class="points">${g.total}</div>
+                    <div>${g.name}</div>
+                    <div class="rank">${medal}</div>
+                </div>
+            `;
+        });
+    });
 </script>
 
 </body>
