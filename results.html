@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>نتائج التصويت</title>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+  <style>
+    body { font-family: sans-serif; text-align: center; padding: 30px; }
+    .box {
+      background: #f7f7f7; padding: 20px; margin: 10px auto;
+      width: 80%; border-radius: 12px; font-size: 22px;
+    }
+  </style>
+</head>
+
+<body>
+
+<h2>📊 نتائج التصويت</h2>
+
+<div class="box" id="full">مجموعة الفل: ...</div>
+<div class="box" id="yasmeen">مجموعه الياسمين: ...</div>
+<div class="box" id="orchid">مجموعه الاوركيد: ...</div>
+<div class="box" id="jory">مجموعة الجوري: ...</div>
+<div class="box" id="lavender">مجموعه اللافندر: ...</div>
+<div class="box" id="tulip">مجموعة التوليب: ...</div>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyC8UZJKyPt5pJx0SnmgZNZ4a2AJQXTMQwE",
+    authDomain: "aisha-almutairi-votes.firebaseapp.com",
+    databaseURL: "https://aisha-almutairi-votes-default-rtdb.europe-west1.firebasedatabase.app/",
+    projectId: "aisha-almutairi-votes",
+    storageBucket: "aisha-almutairi-votes.firebasestorage.app",
+    messagingSenderId: "854043244442",
+    appId: "1:854043244442:web:7a322b5296b064e3bf2c23"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+
+  db.ref("votes").on("value", snap => {
+    let v = snap.val() || {};
+
+    document.getElementById("full").innerHTML = "مجموعة الفل: " + (v.AlFull || 0);
+    document.getElementById("yasmeen").innerHTML = "مجموعه الياسمين: " + (v.Yasmeen || 0);
+    document.getElementById("orchid").innerHTML = "مجموعه الاوركيد: " + (v.Orchid || 0);
+    document.getElementById("jory").innerHTML = "مجموعة الجوري: " + (v.Jory || 0);
+    document.getElementById("lavender").innerHTML = "مجموعه اللافندر: " + (v.Lavender || 0);
+    document.getElementById("tulip").innerHTML = "مجموعة التوليب: " + (v.Tulip || 0);
+  });
+</script>
+
+</body>
+</html>
