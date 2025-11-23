@@ -1,58 +1,156 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <title>تصويت المعلمات</title>
+    <meta charset="UTF-8">
+    <title>التصويت</title>
 
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
-  <style>
-    body { font-family: sans-serif; text-align: center; padding: 30px; }
-    button {
-      display: block; width: 80%; margin: 10px auto;
-      padding: 15px; font-size: 20px; border-radius: 10px;
-      border: none; background: #6a5acd; color: white; cursor: pointer;
-    }
-    button:hover { opacity: 0.8; }
-  </style>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-size: cover;
+            background-position: center;
+            background-image: url('background.jpg'); /* نفس الخلفية الموجودة عندك */
+            padding: 20px;
+            text-align: center;
+        }
+
+        .group-box {
+            background: #ffffffcc;
+            padding: 20px;
+            border-radius: 20px;
+            margin: 20px auto;
+            width: 90%;
+            max-width: 800px;
+            box-shadow: 0 0 10px #d9d9d9;
+        }
+
+        .title {
+            font-size: 30px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .butterfly-row {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .butterfly {
+            width: 70px;
+            cursor: pointer;
+            transition: transform .2s;
+        }
+
+        .butterfly:hover {
+            transform: scale(1.2);
+        }
+    </style>
 </head>
 
 <body>
 
-<h2>اختاري المجموعة للتصويت</h2>
+<h1>تصويت المعلمات</h1>
 
-<button onclick="vote('AlFull')">مجموعة الفل</button>
-<button onclick="vote('Yasmeen')">مجموعه الياسمين</button>
-<button onclick="vote('Orchid')">مجموعه الاوركيد</button>
-<button onclick="vote('Jory')">مجموعة الجوري</button>
-<button onclick="vote('Lavender')">مجموعه اللافندر</button>
-<button onclick="vote('Tulip')">مجموعة التوليب</button>
+<!-- صندوق مجموعة الجوري -->
+<div class="group-box">
+    <div class="title">مجموعة الجوري</div>
+    <div class="butterfly-row">
+        <img class="butterfly" src="butter1.png" onclick="vote('Jory','participation')">
+        <img class="butterfly" src="butter2.png" onclick="vote('Jory','cooperation')">
+        <img class="butterfly" src="butter3.png" onclick="vote('Jory','calm')">
+        <img class="butterfly" src="butter4.png" onclick="vote('Jory','speed')">
+        <img class="butterfly" src="butter5.png" onclick="vote('Jory','discipline')">
+    </div>
+</div>
+
+<!-- صندوق مجموعة الياسمين -->
+<div class="group-box">
+    <div class="title">مجموعة الياسمين</div>
+    <div class="butterfly-row">
+        <img class="butterfly" src="butter1.png" onclick="vote('Yasmeen','participation')">
+        <img class="butterfly" src="butter2.png" onclick="vote('Yasmeen','cooperation')">
+        <img class="butterfly" src="butter3.png" onclick="vote('Yasmeen','calm')">
+        <img class="butterfly" src="butter4.png" onclick="vote('Yasmeen','speed')">
+        <img class="butterfly" src="butter5.png" onclick="vote('Yasmeen','discipline')">
+    </div>
+</div>
+
+<!-- اللافندر -->
+<div class="group-box">
+    <div class="title">مجموعة اللافندر</div>
+    <div class="butterfly-row">
+        <img class="butterfly" src="butter1.png" onclick="vote('Lavender','participation')">
+        <img class="butterfly" src="butter2.png" onclick="vote('Lavender','cooperation')">
+        <img class="butterfly" src="butter3.png" onclick="vote('Lavender','calm')">
+        <img class="butterfly" src="butter4.png" onclick="vote('Lavender','speed')">
+        <img class="butterfly" src="butter5.png" onclick="vote('Lavender','discipline')">
+    </div>
+</div>
+
+<!-- الأوركيد -->
+<div class="group-box">
+    <div class="title">مجموعة الأوركيد</div>
+    <div class="butterfly-row">
+        <img class="butterfly" src="butter1.png" onclick="vote('Orchid','participation')">
+        <img class="butterfly" src="butter2.png" onclick="vote('Orchid','cooperation')">
+        <img class="butterfly" src="butter3.png" onclick="vote('Orchid','calm')">
+        <img class="butterfly" src="butter4.png" onclick="vote('Orchid','speed')">
+        <img class="butterfly" src="butter5.png" onclick="vote('Orchid','discipline')">
+    </div>
+</div>
+
+<!-- مجموعة الفل -->
+<div class="group-box">
+    <div class="title">مجموعة الفل</div>
+    <div class="butterfly-row">
+        <img class="butterfly" src="butter1.png" onclick="vote('Alfull','participation')">
+        <img class="butterfly" src="butter2.png" onclick="vote('Alfull','cooperation')">
+        <img class="butterfly" src="butter3.png" onclick="vote('Alfull','calm')">
+        <img class="butterfly" src="butter4.png" onclick="vote('Alfull','speed')">
+        <img class="butterfly" src="butter5.png" onclick="vote('Alfull','discipline')">
+    </div>
+</div>
+
+<!-- مجموعة التوليب -->
+<div class="group-box">
+    <div class="title">مجموعة التوليب</div>
+    <div class="butterfly-row">
+        <img class="butterfly" src="butter1.png" onclick="vote('Tulip','participation')">
+        <img class="butterfly" src="butter2.png" onclick="vote('Tulip','cooperation')">
+        <img class="butterfly" src="butter3.png" onclick="vote('Tulip','calm')">
+        <img class="butterfly" src="butter4.png" onclick="vote('Tulip','speed')">
+        <img class="butterfly" src="butter5.png" onclick="vote('Tulip','discipline')">
+    </div>
+</div>
 
 <script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyC8UZJKyPt5pJx0SnmgZNZ4a2AJQXTMQwE",
-    authDomain: "aisha-almutairi-votes.firebaseapp.com",
-    databaseURL: "https://aisha-almutairi-votes-default-rtdb.europe-west1.firebasedatabase.app/",
-    projectId: "aisha-almutairi-votes",
-    storageBucket: "aisha-almutairi-votes.firebasestorage.app",
-    messagingSenderId: "854043244442",
-    appId: "1:854043244442:web:7a322b5296b064e3bf2c23"
-  };
+    const firebaseConfig = {
+        apiKey: "AIzaSyC8UZJKyPt5pJx0SnmgZNZ4a2AJQXTMQwE",
+        authDomain: "aisha-almutairi-votes.firebaseapp.com",
+        databaseURL: "https://aisha-almutairi-votes-default-rtdb.europe-west1.firebasedatabase.app/",
+        projectId: "aisha-almutairi-votes",
+        storageBucket: "aisha-almutairi-votes.firebasestorage.app",
+        messagingSenderId: "854043244442",
+        appId: "1:854043244442:web:7a322b5296b064e3bf2c23"
+    };
 
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.database();
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
 
-  function vote(groupName) {
-    let ref = db.ref("votes/" + groupName);
+    function vote(group, metric) {
+        const ref = db.ref(`votes/${group}/${metric}`);
+        ref.transaction(val => (val || 0) + 1);
 
-    ref.transaction(current => {
-      return (current || 0) + 1;
-    });
-
-    alert("✨ تم تسجيل تصويتك بنجاح!");
-  }
+        alert("✔ تم تسجيل تصويتك!");
+    }
 </script>
 
 </body>
