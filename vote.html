@@ -15,7 +15,7 @@
             font-family: 'Tajawal', sans-serif;
             background-size: cover;
             background-position: center;
-            background-image: url('background.jpg'); /* نفس الخلفية الموجودة عندك */
+            background-image: url('background.jpg'); /* نفس الخلفية */
             padding: 20px;
             text-align: center;
         }
@@ -52,6 +52,24 @@
         .butterfly:hover {
             transform: scale(1.2);
         }
+
+        /* زر عرض النتائج */
+        .results-btn {
+            display: inline-block;
+            background: #a357ff;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 14px;
+            font-size: 22px;
+            font-weight: bold;
+            text-decoration: none;
+            box-shadow: 0 0 12px #d5b7ff;
+            margin-top: 25px;
+        }
+
+        .results-btn:hover {
+            opacity: 0.85;
+        }
     </style>
 </head>
 
@@ -71,7 +89,7 @@
     </div>
 </div>
 
-<!-- صندوق مجموعة الياسمين -->
+<!-- مجموعة الياسمين -->
 <div class="group-box">
     <div class="title">مجموعة الياسمين</div>
     <div class="butterfly-row">
@@ -130,6 +148,12 @@
         <img class="butterfly" src="butter5.png" onclick="vote('Tulip','discipline')">
     </div>
 </div>
+
+<!-- زر عرض النتائج -->
+<a class="results-btn" 
+   href="https://ht9cgjhxph-oss.github.io/Aisha-votes/result.html">
+   عرض النتائج
+</a>
 
 <script>
     const firebaseConfig = {
