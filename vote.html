@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>تصويت المعلمات</title>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+  <style>
+    body { font-family: sans-serif; text-align: center; padding: 30px; }
+    button {
+      display: block; width: 80%; margin: 10px auto;
+      padding: 15px; font-size: 20px; border-radius: 10px;
+      border: none; background: #6a5acd; color: white; cursor: pointer;
+    }
+    button:hover { opacity: 0.8; }
+  </style>
+</head>
+
+<body>
+
+<h2>اختاري المجموعة للتصويت</h2>
+
+<button onclick="vote('AlFull')">مجموعة الفل</button>
+<button onclick="vote('Yasmeen')">مجموعه الياسمين</button>
+<button onclick="vote('Orchid')">مجموعه الاوركيد</button>
+<button onclick="vote('Jory')">مجموعة الجوري</button>
+<button onclick="vote('Lavender')">مجموعه اللافندر</button>
+<button onclick="vote('Tulip')">مجموعة التوليب</button>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyC8UZJKyPt5pJx0SnmgZNZ4a2AJQXTMQwE",
+    authDomain: "aisha-almutairi-votes.firebaseapp.com",
+    databaseURL: "https://aisha-almutairi-votes-default-rtdb.europe-west1.firebasedatabase.app/",
+    projectId: "aisha-almutairi-votes",
+    storageBucket: "aisha-almutairi-votes.firebasestorage.app",
+    messagingSenderId: "854043244442",
+    appId: "1:854043244442:web:7a322b5296b064e3bf2c23"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+
+  function vote(groupName) {
+    let ref = db.ref("votes/" + groupName);
+
+    ref.transaction(current => {
+      return (current || 0) + 1;
+    });
+
+    alert("✨ تم تسجيل تصويتك بنجاح!");
+  }
+</script>
+
+</body>
+</html>
