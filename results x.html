@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>نتائج تقييم المجموعات</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&display=swap" rel="stylesheet">
+
+<style>
+  body{
+    font-family:"Tajawal",sans-serif;
+    background:#f6e0f5;
+    padding:30px;
+    margin:0;
+    color:#4a2b5b;
+  }
+
+  .wrap{
+    max-width:800px;
+    margin:auto;
+  }
+
+  h1{
+    text-align:center;
+    font-size:40px;
+    font-weight:800;
+    color:#7b3bb7;
+    margin-bottom:10px;
+  }
+
+  p{
+    text-align:center;
+    color:#7b3bb7;
+    font-size:18px;
+    margin-top:0;
+  }
+
+  .card{
+    background:#fff;
+    border-radius:18px;
+    padding:25px;
+    box-shadow:0 12px 30px rgba(0,0,0,0.08);
+    margin-top:30px;
+  }
+
+  .result-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 10px;
+    border-bottom:1px solid #eee;
+    font-size:20px;
+  }
+
+  .result-item:last-child{
+    border-bottom:none;
+  }
+
+  .badge{
+    font-size:26px;
+    font-weight:800;
+    width:45px;
+    text-align:center;
+  }
+
+  .score{
+    font-weight:900;
+    color:#7b3bb7;
+    font-size:22px;
+  }
+
+  .back-btn{
+    display:block;
+    width:100%;
+    margin-top:25px;
+    padding:15px;
+    text-align:center;
+    background:#7b3bb7;
+    color:#fff;
+    text-decoration:none;
+    border-radius:10px;
+    font-size:20px;
+    font-weight:700;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="wrap">
+
+  <h1>نتائج تقييم المجموعات</h1>
+  <p>ترتيب المجموعات حسب مجموع النقاط من Firebase</p>
+
+  <div class="card" id="resultsBox">
+    <p style="text-align:center;color:#999;">يتم تحميل النتائج...</p>
+  </div>
+
+  <a href="index.html" class="back-btn">⬅ العودة لصفحة التقييم</a>
+
+</div>
+
+<!-- Firebase -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDsIVkyv6wEOTBngHKrlZwkiZ8btfU4Onc",
+    authDomain: "aisha2-79800.firebaseapp.com",
+    projectId: "aisha2-79800",
+    storageBucket: "aisha2-79800.firebasestorage.app",
+    messagingSenderId: "601958718178",
+    appId: "1:601958718178:web:f36c20b70eb259355a9cbb"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  async function loadResults(){
+    const box = document.getElementById("resultsBox");
+    box.innerHTML = "<p style='text-align:center;color:#999;'>جارٍ تحميل النتائج...</p>";
+
+    const snap = await getDocs(collection(db, "groups"));
+    let groups = [];
+
+    snap.forEach(doc=>{
+      groups.push({
+        name: doc.id,
+        total: doc.data().total || 0
+      });
+    });
+
+    // ترتيب حسب مجموع النقاط
+    groups.sort((a,b)=> b.total - a.total);
+
+    box.innerHTML = "";
+
+    groups.forEach((g, i)=>{
+      let medal = "";
+      if(i===0) medal = "🥇";
+      else if(i===1) medal = "🥈";
+      else if(i===2) medal = "🥉";
+      else medal = `#${i+1}`;
+
+      box.innerHTML += `
+        <div class="result-item">
+          <div class="badge">${medal}</div>
+          <div>${g.name}</div>
+          <div class="score">${g.total}</div>
+        </div>
+      `;
+    });
+  }
+
+  loadResults();
+</script>
+
+</body>
+</html>
